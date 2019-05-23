@@ -1,8 +1,12 @@
-import Vue from 'vue'
-import App from './App.vue'
-
-Vue.config.productionTip = false
+import Vue from "vue";
+import App from "./App.vue";
+import router from "./router/router.js";
+import apolloProvider from "./apollo/apollo.js";
+Vue.config.productionTip = false;
+Vue.config.ignoredElements = ["trix-editor"];
 
 new Vue({
+  router,
   render: h => h(App),
-}).$mount('#app')
+  provide: apolloProvider.provide()
+}).$mount("#app");
