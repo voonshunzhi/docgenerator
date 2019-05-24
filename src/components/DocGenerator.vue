@@ -1,22 +1,18 @@
 <template>
   <div class="container">
     <router-link :to="`/preview/${id}`" target="_blank">Preview</router-link>
-    <!-- <input :id="'input-trix'" type="hidden" :value="editorContent" name="editorContent">
-    <trix-editor ref="editor" :input="'input-trix'"></trix-editor>-->
+    <input :id="'input-trix'" type="hidden" :value="editorContent" name="editorContent">
+    <trix-editor ref="editor" :input="'input-trix'"></trix-editor>
 
-    <VueTrix v-model="editorContent"/>
+    <!-- <VueTrix v-model="editorContent"/> -->
   </div>
 </template>
 
 <script>
-// import Trix from "trix";
-import VueTrix from "vue-trix";
+import Trix from "trix";
 import { saveDoc, getDoc } from "../apollo/queries";
 export default {
   name: "DocGenerator",
-  components: {
-    VueTrix
-  },
   data() {
     return {
       editorContent: "",
