@@ -1,11 +1,15 @@
 <template>
   <div class="container">
     <router-link :to="`/preview/${id}`" target="_blank">Preview</router-link>
+    <!-- <input :id="'input-trix'" type="hidden" :value="editorContent" name="editorContent">
+    <trix-editor ref="editor" :input="'input-trix'"></trix-editor>-->
+
     <VueTrix v-model="editorContent"/>
   </div>
 </template>
 
 <script>
+// import Trix from "trix";
 import VueTrix from "vue-trix";
 import { saveDoc, getDoc } from "../apollo/queries";
 export default {
@@ -18,8 +22,7 @@ export default {
       editorContent: "",
       previewContent: "",
       jsonContent: "",
-      id: this.$route.params.id,
-      getDoc: ""
+      id: this.$route.params.id
     };
   },
   created() {
@@ -28,15 +31,15 @@ export default {
         query: getDoc(this.$route.params.id, "EDIT")
       })
       .then(data => {
-        console.log(data.data.getDoc.content);
-        this.editorContent = JSON.parse(data.data.getDoc.content);
+        this.editorContent = data.data.getDoc.content;
       });
   },
   methods: {
     updateEditorContent() {
       var element = document.querySelector("trix-editor");
       element.addEventListener("trix-change", () => {
-        let string = element.value;
+        let modifiedString = element.value;
+        let originalString = element.value;
         let currentState = JSON.stringify(element.editor);
         let currentText = JSON.parse(currentState).document[0].text[0].string;
         let matches = currentText.match(/\[.*?\]/g);
@@ -47,7 +50,7 @@ export default {
             allVariables.push(result);
           }
           for (let i = 0; i < matches.length; i++) {
-            string = string.replace(
+            modifiedString = modifiedString.replace(
               "[" + allVariables[i] + "]",
               `<button id="${allVariables[i]}" onclick="alert('${
                 allVariables[i]
@@ -55,9 +58,9 @@ export default {
             );
           }
         }
-        this.previewContent = string;
-        this.jsonContent = JSON.stringify(element.editor);
-        this.savePreviewDataToDb();
+        this.previewContent = modifiedString;
+        this.nonJsonContent = originalString;
+        this.saveEditDataToDb();
       });
     },
     savePreviewDataToDb() {
@@ -77,9 +80,11 @@ export default {
         });
     },
     saveEditDataToDb() {
+      // var myJSONString = JSON.stringify(this.nonJsonContent, null, 2);
+      // var myEscapedJSONString = JSON.stringify(myJSONString).slice(1, -1);
       this.$apollo
         .mutate({
-          mutation: saveDoc(this.id, this.jsonContent, "EDIT")
+          mutation: saveDoc(this.id, this.nonJsonContent, "EDIT")
         })
         .then(data => {
           this.savePreviewDataToDb();

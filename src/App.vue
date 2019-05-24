@@ -1,10 +1,5 @@
 <template>
   <div id="app">
-    <ul>
-      <li>
-        <router-link :to="`/edit/${mongoObjectId()}`">Doc Generator</router-link>
-      </li>
-    </ul>
     <router-view></router-view>
   </div>
 </template>

@@ -15,8 +15,6 @@ export const saveDoc = (id, content, docType) => {
        error
      }
    }`;
-
-  console.log(str);
   return gql(str);
 };
 
