@@ -7,16 +7,27 @@
       <li>
         <router-link to="/preview/1">Preview</router-link>
       </li>
+      {{ getDoc}}
     </ul>
     <router-view></router-view>
   </div>
 </template>
 
 <script>
-//import DocGenerator from "./components/DocGenerator.vue";
-
+import { SAVE_DOC, QUERY } from "./apollo/queries";
 export default {
-  name: "app"
+  name: "app",
+  data() {
+    return {
+      getDoc: {}
+    };
+  },
+  apollo: {
+    getDoc: QUERY
+  },
+  mounted() {
+    console.log(SAVE_DOC);
+  }
 };
 </script>
 

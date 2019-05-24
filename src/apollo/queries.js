@@ -1,15 +1,46 @@
 import { gql } from "apollo-boost";
 
+export const saveDoc = (id, content, docType) => {
+  let str =
+    `mutation{
+    saveDoc(input: { title: "Demo", docType:${docType},content:` +
+    `"` +
+    content +
+    `"` +
+    `,docID:` +
+    `"` +
+    id +
+    `"` +
+    `
+    }) {
+      isModified
+      modifiedID
+      error
+    }
+  }`;
+
+  if (!id) {
+    str =
+      `mutation{
+    saveDoc(input: { title: "Demo", docType:${docType},content:` +
+      `"` +
+      content +
+      `"` +
+      `
+    }) {
+      isModified
+      modifiedID
+      error
+    }
+  }`;
+  }
+
+  return gql(str);
+};
+
 export const SAVE_DOC = gql`
   mutation {
-    saveDoc(
-      input: {
-        title: "insert another doc"
-        docType: LIVE
-        content: "some random string whoooo"
-        docID: "00000000d2f07b50a6797263"
-      }
-    ) {
+    saveDoc(input: { title: "Demo", docType: LIVE, content: $content }) {
       isModified
       modifiedID
       error
