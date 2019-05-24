@@ -6,15 +6,15 @@
 
 <script>
 export default {
-  name: "DocPreview",
+  name: "DocLive",
   data() {
     content: "";
-    sample:{
-        name:"Barack Obama",
-        invoiceNum:"123456",
-        houseNumber:"123",
-        street:"White House",
-        amount:"USD 100"
+    sample: {
+      name: "Barack Obama";
+      invoiceNum: "123456";
+      houseNumber: "123";
+      street: "White House";
+      amount: "USD 100";
     }
   },
   created() {},
@@ -28,9 +28,7 @@ export default {
           this.content = data.data.getDoc.content;
         });
     },
-    putDataIntoTemplate(){
-        
-    }
+    putDataIntoTemplate() {}
   }
 };
 </script>

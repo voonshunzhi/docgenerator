@@ -1,15 +1,13 @@
 <template>
   <div class="container">
     <router-link :to="`/preview/${id}`" target="_blank">Preview</router-link>
-    <input :id="'input-trix'" type="hidden" :value="editorContent" name="editorContent">
-    <trix-editor ref="editor" :input="'input-trix'"></trix-editor>
-
-    <!-- <VueTrix v-model="editorContent"/> -->
+    <button v-on:click="publishTemplate">Publish</button>
+    <VueTrix v-model="editorContent"/>
   </div>
 </template>
 
 <script>
-import Trix from "trix";
+import VueTrix from "vue-trix";
 import { saveDoc, getDoc } from "../apollo/queries";
 export default {
   name: "DocGenerator",
@@ -27,6 +25,7 @@ export default {
         query: getDoc(this.$route.params.id, "EDIT")
       })
       .then(data => {
+        console.log(data);
         this.editorContent = data.data.getDoc.content;
       });
   },
@@ -78,12 +77,26 @@ export default {
     saveEditDataToDb() {
       // var myJSONString = JSON.stringify(this.nonJsonContent, null, 2);
       // var myEscapedJSONString = JSON.stringify(myJSONString).slice(1, -1);
+      console.log("hi");
       this.$apollo
         .mutate({
           mutation: saveDoc(this.id, this.nonJsonContent, "EDIT")
         })
         .then(data => {
           this.savePreviewDataToDb();
+        })
+        .catch(error => {
+          console.error(error);
+        });
+    },
+    publishTemplate() {
+      this.$apollo
+        .mutate({
+          mutation: saveDoc(this.id, this.nonJsonContent, "LIVE")
+        })
+        .then(data => {
+          console.log(data);
+          this.$router.push({ name: "publish", params: { id: this.id } });
         })
         .catch(error => {
           console.error(error);
