@@ -5,22 +5,23 @@
 </template>
 
 <script>
-import data from "../data/data.json";
+import { getDoc } from "../apollo/queries";
 export default {
   name: "DocPreview",
-  created: function() {
-    this.data = data.templates.filter(
-      element => element.id === this.$route.params.id
-    )[0].content;
-  },
-  mounted() {
-    let element = document.getElementById("data");
-    element.innerHTML = this.data;
-  },
   data() {
-    return {
-      data: null
-    };
+    previewContent: "";
+  },
+  created: function() {
+    this.$apollo
+      .query({
+        query: getDoc(this.$route.params.id, "PREVIEW")
+      })
+      .then(data => {
+        this.previewContent = data.data.getDoc.content;
+        let element = document.getElementById("data");
+        element.innerHTML = this.previewContent;
+        console.log(this.previewContent);
+      });
   }
 };
 </script>

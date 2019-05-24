@@ -7,7 +7,7 @@ Vue.use(VueRouter);
 
 const routes = [
   { path: "/preview/:id", component: DocPreview },
-  { path: "/", component: DocGenerator }
+  { path: "/edit/:id", component: DocGenerator }
 ];
 
 const router = new VueRouter({

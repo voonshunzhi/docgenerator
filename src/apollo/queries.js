@@ -1,59 +1,32 @@
 import { gql } from "apollo-boost";
 
 export const saveDoc = (id, content, docType) => {
-  let str =
-    `mutation{
-    saveDoc(input: { title: "Demo", docType:${docType},content:` +
-    `"` +
-    content +
-    `"` +
-    `,docID:` +
-    `"` +
-    id +
-    `"` +
-    `
-    }) {
-      isModified
-      modifiedID
-      error
-    }
-  }`;
+  let str = ` mutation {
+     saveDoc(
+       input: {
+         title: "Demo"
+         docType: ${docType}
+         content: "${content}"
+         docID: "${id}"
+       }
+     ) {
+       isModified
+       modifiedID
+       error
+     }
+   }`;
 
-  if (!id) {
-    str =
-      `mutation{
-    saveDoc(input: { title: "Demo", docType:${docType},content:` +
-      `"` +
-      content +
-      `"` +
-      `
-    }) {
-      isModified
-      modifiedID
-      error
-    }
-  }`;
-  }
-
+  console.log(str);
   return gql(str);
 };
 
-export const SAVE_DOC = gql`
-  mutation {
-    saveDoc(input: { title: "Demo", docType: LIVE, content: $content }) {
-      isModified
-      modifiedID
-      error
-    }
-  }
-`;
-
-export const QUERY = gql`
-  query {
-    getDoc(id: "00000000ece58d4e4839725c", docType: LIVE) {
+export const getDoc = (id, doctype) => {
+  let str = ` query {
+    getDoc(id: "${id}", docType: ${doctype}) {
       _id
       title
       content
     }
-  }
-`;
+  }`;
+  return gql(str);
+};

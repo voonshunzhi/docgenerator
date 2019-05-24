@@ -7,7 +7,7 @@
 
 <script>
 import VueTrix from "vue-trix";
-import { saveDoc } from "../apollo/queries";
+import { saveDoc, getDoc } from "../apollo/queries";
 export default {
   name: "DocGenerator",
   components: {
@@ -18,8 +18,19 @@ export default {
       editorContent: "",
       previewContent: "",
       jsonContent: "",
-      id: null
+      id: this.$route.params.id,
+      getDoc: ""
     };
+  },
+  created() {
+    this.$apollo
+      .query({
+        query: getDoc(this.$route.params.id, "EDIT")
+      })
+      .then(data => {
+        console.log(data.data.getDoc.content);
+        this.editorContent = JSON.parse(data.data.getDoc.content);
+      });
   },
   methods: {
     updateEditorContent() {
@@ -46,43 +57,34 @@ export default {
         }
         this.previewContent = string;
         this.jsonContent = JSON.stringify(element.editor);
-        this.saveEditDataToDb();
+        this.savePreviewDataToDb();
       });
-    },
-    preview() {
-      console.log(this.realContent);
     },
     savePreviewDataToDb() {
       this.$apollo
         .mutate({
-          mutation: saveDoc(this.id, this.previewContent, "PREVIEW")
+          mutation: saveDoc(
+            this.id,
+            this.previewContent.replace(/\"/g, '\\"'),
+            "PREVIEW"
+          )
         })
         .then(data => {
-          // Result
           console.log(data.data.saveDoc.modifiedID);
-          this.id = data.data.saveDoc.modifiedID;
         })
         .catch(error => {
-          // Error
           console.error(error);
         });
     },
     saveEditDataToDb() {
       this.$apollo
         .mutate({
-          mutation: saveDoc(
-            this.id,
-            this.jsonContent.replace(/\"/g, '\\"'),
-            "EDIT"
-          )
+          mutation: saveDoc(this.id, this.jsonContent, "EDIT")
         })
         .then(data => {
-          // Result
-          this.id = data.data.saveDoc.modifiedID;
           this.savePreviewDataToDb();
         })
         .catch(error => {
-          // Error
           console.error(error);
         });
     }
