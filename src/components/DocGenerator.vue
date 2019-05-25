@@ -77,7 +77,6 @@ export default {
     saveEditDataToDb() {
       // var myJSONString = JSON.stringify(this.nonJsonContent, null, 2);
       // var myEscapedJSONString = JSON.stringify(myJSONString).slice(1, -1);
-      console.log("hi");
       this.$apollo
         .mutate({
           mutation: saveDoc(this.id, this.nonJsonContent, "EDIT")

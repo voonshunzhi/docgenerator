@@ -9,7 +9,9 @@ import { getDoc } from "../apollo/queries";
 export default {
   name: "DocPreview",
   data() {
-    previewContent: "";
+    return {
+      previewContent: ""
+    };
   },
   created: function() {
     this.$apollo
