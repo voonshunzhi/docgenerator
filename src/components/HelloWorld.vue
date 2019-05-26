@@ -11,9 +11,6 @@
 <script>
 export default {
   name: "HelloWorld",
-  props: {
-    msg: String
-  },
   methods: {
     mongoObjectId() {
       var timestamp = ((new Date().getTime() / 1000) | 0).toString(16);
