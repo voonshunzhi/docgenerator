@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <router-link :to="`/preview/${id}`" target="_blank">Preview</router-link>
-    <button v-on:click="publishTemplate">Publish</button>
+    <router-link :to="`/publish/${id}`" target="_blank">Publish</router-link>
     <VueTrix v-model="editorContent"/>
   </div>
 </template>
@@ -69,6 +69,7 @@ export default {
         })
         .then(data => {
           console.log(data.data.saveDoc.modifiedID);
+          this.publishTemplate();
         })
         .catch(error => {
           console.error(error);
@@ -95,7 +96,6 @@ export default {
         })
         .then(data => {
           console.log(data);
-          this.$router.push({ name: "publish", params: { id: this.id } });
         })
         .catch(error => {
           console.error(error);

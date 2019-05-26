@@ -23,6 +23,7 @@ export default {
         let element = document.getElementById("data");
         element.innerHTML = this.previewContent;
         console.log(this.previewContent);
+        alert("Done fetching!");
       });
   }
 };

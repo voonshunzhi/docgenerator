@@ -40,6 +40,7 @@ export default {
           this.content = data.data.getDoc.content;
           console.log(this.content);
           this.putDataIntoTemplate(this.content);
+          alert("Done fetching!");
         });
     },
     putDataIntoTemplate(template) {
