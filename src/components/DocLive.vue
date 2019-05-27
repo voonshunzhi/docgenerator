@@ -1,11 +1,14 @@
 <template>
   <div>
+    <loading :active.sync="isLoading" :can-cancel="true" :is-full-page="fullPage"></loading>
     <div id="liveData"></div>
   </div>
 </template>
 
 <script>
 import { getDoc } from "../apollo/queries";
+import Loading from "vue-loading-overlay";
+import "vue-loading-overlay/dist/vue-loading.css";
 export default {
   name: "DocLive",
   data() {
@@ -24,8 +27,13 @@ export default {
         houseNumber: "House Number",
         street: "Street",
         amount: "Amount"
-      }
+      },
+      isLoading: true,
+      fullPage: true
     };
+  },
+  components: {
+    Loading
   },
   created() {
     this.getLiveDoc();
@@ -40,7 +48,7 @@ export default {
           this.content = data.data.getDoc.content;
           console.log(this.content);
           this.putDataIntoTemplate(this.content);
-          alert("Done fetching!");
+          this.isLoading = false;
         });
     },
     putDataIntoTemplate(template) {

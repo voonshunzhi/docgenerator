@@ -1,7 +1,19 @@
 <template>
-  <div class="container">
-    <router-link :to="`/preview/${id}`" target="_blank">Preview</router-link>
-    <router-link :to="`/publish/${id}`" target="_blank">Publish</router-link>
+  <div class="trix-editor-container">
+    <div class="navigation">
+      <div class="navbar">
+        <div class="editor-logo">
+          <v-icon x-large>insert_drive_file</v-icon>
+        </div>
+        <div>title</div>
+        <div>
+          <router-link :to="`/publish/${id}`" target="_blank">Publish</router-link>
+        </div>
+        <div>
+          <router-link :to="`/preview/${id}`" target="_blank">Preview</router-link>
+        </div>
+      </div>
+    </div>
     <VueTrix v-model="editorContent"/>
   </div>
 </template>
@@ -112,8 +124,21 @@ export default {
 
 <style scoped>
 @import "../assets/css/trix.css";
-.container {
+.trix-editor-container {
   height: 100%;
+}
+.editor-logo {
+  align-items: center;
+  justify-content: center;
+  display: flex;
+}
+.navbar {
+  height: 70px;
+  display: grid;
+  display: grid;
+  grid-template-columns: 0.5fr 1.1fr 2.1fr 0.3fr;
+  grid-template-rows: 1fr;
+  grid-template-areas: ". . . .";
 }
 </style>
 

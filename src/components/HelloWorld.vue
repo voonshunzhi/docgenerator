@@ -1,18 +1,12 @@
 <template>
-  <div class="hello">
-    <ul>
-      <li>
-        <router-link :to="`/edit/${mongoObjectId()}`">Doc Generator</router-link>
-      </li>
-    </ul>
-  </div>
+  <router-link :to="`/edit/${mongoDbId()}`" target="_blank">Create Document</router-link>
 </template>
 
 <script>
 export default {
   name: "HelloWorld",
   methods: {
-    mongoObjectId() {
+    mongoDbId: function() {
       var timestamp = ((new Date().getTime() / 1000) | 0).toString(16);
       return (
         timestamp +
@@ -27,16 +21,5 @@ export default {
 };
 </script>
 
-<style scoped>
-ul {
-  list-style-type: none;
-  padding: 0;
-}
-li {
-  display: inline-block;
-  margin: 0 10px;
-}
-a {
-  color: #42b983;
-}
+<style>
 </style>

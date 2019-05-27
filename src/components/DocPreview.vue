@@ -1,17 +1,25 @@
 <template>
   <div>
+    <loading :active.sync="isLoading" :can-cancel="true" :is-full-page="fullPage"></loading>
     <div id="data"></div>
   </div>
 </template>
 
 <script>
 import { getDoc } from "../apollo/queries";
+import Loading from "vue-loading-overlay";
+import "vue-loading-overlay/dist/vue-loading.css";
 export default {
   name: "DocPreview",
   data() {
     return {
-      previewContent: ""
+      previewContent: "",
+      isLoading: true,
+      fullPage: true
     };
+  },
+  components: {
+    Loading
   },
   created: function() {
     this.$apollo
@@ -23,7 +31,7 @@ export default {
         let element = document.getElementById("data");
         element.innerHTML = this.previewContent;
         console.log(this.previewContent);
-        alert("Done fetching!");
+        this.isLoading = false;
       });
   }
 };
