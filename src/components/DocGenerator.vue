@@ -2,15 +2,40 @@
   <div class="trix-editor-container">
     <div class="navigation">
       <div class="navbar">
-        <div class="editor-logo">
-          <v-icon x-large>insert_drive_file</v-icon>
+        <div class="div1">
+          <div>
+            <div class="logo-container">
+              <v-icon medium color="#ffffff">insert_drive_file</v-icon>
+            </div>
+          </div>
+          <div class="div1-col2">
+            <div>
+              <input v-model="message" placeholder="Untitled Doc Template" class="title-input">
+            </div>
+            <div class="buttons-container">
+              <button class="function-button">File</button>
+              <button class="function-button">View</button>
+              <button class="function-button">Help</button>
+            </div>
+          </div>
         </div>
-        <div>title</div>
-        <div>
-          <router-link :to="`/publish/${id}`" target="_blank">Publish</router-link>
-        </div>
-        <div>
-          <router-link :to="`/preview/${id}`" target="_blank">Preview</router-link>
+        <div class="div2">
+          <div></div>
+          <div class="div2-sub">
+            <div class="link-container">
+              <router-link :to="`/preview/${id}`" target="_blank" title="Preview the document">
+                <v-icon medium>remove_red_eye</v-icon>
+              </router-link>
+            </div>
+            <div class="link-container">
+              <router-link
+                :to="`/publish/${id}`"
+                target="_blank"
+                class="publish-button"
+                title="Publish the document"
+              >Publish</router-link>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -127,18 +152,83 @@ export default {
 .trix-editor-container {
   height: 100%;
 }
-.editor-logo {
+.div1 {
   align-items: center;
   justify-content: center;
   display: flex;
 }
+
+.div1-col2 {
+  display: flex;
+  flex-direction: column;
+  padding-left: 10px;
+}
+
 .navbar {
-  height: 70px;
+  height: 75px;
   display: grid;
-  display: grid;
-  grid-template-columns: 0.5fr 1.1fr 2.1fr 0.3fr;
+  grid-template-columns: 0.7fr 1.3fr;
   grid-template-rows: 1fr;
   grid-template-areas: ". . . .";
+}
+
+.div2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr;
+  grid-template-areas: ". . . .";
+}
+
+.div2-sub {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.logo-container {
+  background: linear-gradient(180deg, #2f80ed 0%, #0055ba 100%);
+  border-radius: 25px;
+  width: 50px;
+  height: 50px;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+}
+
+.title-input {
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 20px;
+  display: flex;
+  align-items: center;
+  color: #666666;
+}
+
+.buttons-container {
+  display: flex;
+  flex-direction: row;
+  padding-top: 5px;
+}
+
+.function-button {
+  padding: 5px;
+}
+
+a {
+  text-decoration: none;
+  color: #ffffff;
+}
+
+.publish-button {
+  padding: 10px 20px;
+  background-color: #0055ba;
+  border-radius: 5px;
+}
+
+.link-container {
+  padding: 10px;
+  margin: 10px;
 }
 </style>
 
