@@ -53,7 +53,8 @@ export default {
       editorContent: "",
       previewContent: "",
       jsonContent: "",
-      id: this.$route.params.id
+      id: this.$route.params.id,
+      message: ""
     };
   },
   created() {
