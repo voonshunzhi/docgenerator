@@ -1,6 +1,6 @@
 <template>
   <div>
-    <!-- <loading :active.sync="isLoading" :can-cancel="true" :is-full-page="fullPage"></loading> -->
+    <loading :active.sync="isLoading" :can-cancel="true" :is-full-page="fullPage"></loading>
     <div id="liveData"></div>
   </div>
 </template>
@@ -28,7 +28,7 @@ export default {
         street: "Street",
         amount: "Amount"
       },
-      isLoading: false,
+      isLoading: true,
       fullPage: true
     };
   },
@@ -48,7 +48,7 @@ export default {
           this.content = data.data.getDoc.content;
           console.log(this.content);
           this.putDataIntoTemplate(this.content);
-          //this.isLoading = false;
+          this.isLoading = false;
         });
     },
     putDataIntoTemplate(template) {

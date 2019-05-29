@@ -1,5 +1,6 @@
 <template>
   <div class="trix-editor-container">
+    <loading :active.sync="isLoading" :can-cancel="true" :is-full-page="fullPage"></loading>
     <div class="navigation">
       <div class="navbar">
         <div class="div1">
@@ -45,6 +46,8 @@
 
 <script>
 import VueTrix from "vue-trix";
+import Loading from "vue-loading-overlay";
+import "vue-loading-overlay/dist/vue-loading.css";
 import { saveDoc, getDoc } from "../apollo/queries";
 export default {
   name: "DocGenerator",
@@ -54,7 +57,9 @@ export default {
       previewContent: "",
       jsonContent: "",
       id: this.$route.params.id,
-      message: ""
+      message: "",
+      isLoading: true,
+      fullPage: true
     };
   },
   created() {
@@ -63,8 +68,12 @@ export default {
         query: getDoc(this.$route.params.id, "EDIT")
       })
       .then(data => {
-        console.log(data);
-        this.editorContent = data.data.getDoc.content;
+        var element = document.querySelector("trix-editor");
+        element.editor.insertHTML(data.data.getDoc.content);
+        this.isLoading = false;
+      })
+      .catch(err => {
+        console.log("err", err);
       });
   },
   methods: {
@@ -85,14 +94,17 @@ export default {
           for (let i = 0; i < matches.length; i++) {
             modifiedString = modifiedString.replace(
               "[" + allVariables[i] + "]",
-              `<button id="${allVariables[i]}" onclick="alert('${
+              `<button id="${
                 allVariables[i]
-              }')">${allVariables[i]}</button>`
+              }" class="preview-button" onclick="alert('${allVariables[i]}')">${
+                allVariables[i]
+              }</button>`
             );
           }
         }
         this.previewContent = modifiedString;
         this.nonJsonContent = originalString;
+        this.currentState = currentState;
         this.saveEditDataToDb();
       });
     },
@@ -105,8 +117,7 @@ export default {
             "PREVIEW"
           )
         })
-        .then(data => {
-          console.log(data.data.saveDoc.modifiedID);
+        .then(() => {
           this.publishTemplate();
         })
         .catch(error => {
@@ -114,13 +125,14 @@ export default {
         });
     },
     saveEditDataToDb() {
-      // var myJSONString = JSON.stringify(this.nonJsonContent, null, 2);
+      // var myJSONString = JSON.stringify(this.currentState, null, 2);
       // var myEscapedJSONString = JSON.stringify(myJSONString).slice(1, -1);
+      // console.log(myEscapedJSONString);
       this.$apollo
         .mutate({
           mutation: saveDoc(this.id, this.nonJsonContent, "EDIT")
         })
-        .then(data => {
+        .then(() => {
           this.savePreviewDataToDb();
         })
         .catch(error => {

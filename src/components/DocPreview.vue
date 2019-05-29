@@ -1,6 +1,6 @@
 <template>
   <div class="editor-container">
-    <!-- <loading :active.sync="isLoading" :can-cancel="true" :is-full-page="fullPage"></loading> -->
+    <loading :active.sync="isLoading" :can-cancel="true" :is-full-page="fullPage"></loading>
     <div>
       <div class="navbar">
         <div class="div1">
@@ -50,9 +50,10 @@ export default {
   data() {
     return {
       previewContent: "",
-      isLoading: false, //true,
+      isLoading: true,
       fullPage: true,
-      id: this.$route.params.id
+      id: this.$route.params.id,
+      message: ""
     };
   },
   components: {
@@ -64,11 +65,19 @@ export default {
         query: getDoc(this.$route.params.id, "PREVIEW")
       })
       .then(data => {
-        this.previewContent = data.data.getDoc.content;
         let element = document.getElementById("data");
+        this.previewContent = data.data.getDoc.content;
         element.innerHTML = this.previewContent;
-        console.log(this.previewContent);
-        //this.isLoading = false;
+        this.isLoading = false;
+
+        let eles = document.getElementsByClassName("preview-button");
+        for (let i = 0; i < eles.length; i++) {
+          eles[i].style.padding = "10px 30px";
+          eles[i].style.backgroundColor = "#0055ba";
+          eles[i].style.borderRadius = "5px";
+          eles[i].style.color = "#ffffff";
+          eles[i].style.margin = "5px";
+        }
       });
   }
 };
@@ -79,6 +88,7 @@ export default {
 .editor-container {
   height: 100%;
 }
+
 .div1 {
   align-items: center;
   justify-content: center;
